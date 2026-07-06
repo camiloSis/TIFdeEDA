@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Estructuras de Datos</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Simulador de Estructuras de Datos</h1>
+        <nav id="menu">
+            <button data-structure="stack">Pila</button>
+            <button data-structure="queue">Cola</button>
+            <button data-structure="list">Lista</button>
+            <button data-structure="tree">Árbol Binario</button>
+        </nav>
+        <div id="controls">
+            <input type="number" id="inputValue" placeholder="Valor">
+            <button id="btnInsert">Insertar</button>
+            <button id="btnDelete">Eliminar</button>
+        </div>
+        <div id="canvas-container">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div id="explanation"></div>
+    </div>
+    <script src="js/stack.js"></script>
+    <script src="js/queue.js"></script>
+    <script src="js/list.js"></script>
+    <script src="js/tree.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
