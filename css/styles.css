@@ -55,12 +55,23 @@ h1 {
 
 #controls {
     display: flex;
-    gap: 10px;
+    gap: 40px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
 }
 
-#controls input {
+.control-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+}
+
+.control-section input {
     padding: 8px 12px;
     font-size: 16px;
     border: 2px solid #ccc;
@@ -68,7 +79,7 @@ h1 {
     width: 120px;
 }
 
-#controls button {
+.control-section button {
     padding: 8px 20px;
     border: none;
     border-radius: 6px;
@@ -76,10 +87,109 @@ h1 {
     color: white;
     font-size: 16px;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-#controls button:hover {
+.control-section button:hover {
     background: #e94560;
+}
+
+#insert-section button {
+    background: #2d6a4f;
+}
+
+#insert-section button:hover {
+    background: #1b4332;
+}
+
+#delete-section button {
+    background: #e94560;
+}
+
+#delete-section button:hover {
+    background: #c23152;
+}
+
+#inputDeleteValue {
+    display: none;
+}
+
+#queue-section {
+    display: none;
+}
+
+#queue-section button:first-of-type {
+    background: #0f3460;
+}
+
+#queue-section button:last-of-type {
+    background: #e94560;
+}
+
+#queue-section input {
+    width: 90px;
+}
+
+#list-section {
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 100%;
+}
+
+#list-section button {
+    font-size: 13px;
+    padding: 6px 12px;
+    white-space: nowrap;
+}
+
+#list-section input {
+    width: 70px;
+}
+
+#list-section #btnInsertFirst,
+#list-section #btnInsertLast {
+    background: #2d6a4f;
+}
+
+#list-section #btnInsertFirst:hover,
+#list-section #btnInsertLast:hover {
+    background: #1b4332;
+}
+
+#list-section #btnDeleteListAt {
+    background: #e94560;
+}
+
+#list-section #btnTraverseFwd {
+    background: #3498db;
+}
+
+#list-section #btnTraverseBwd {
+    background: #9b59b6;
+}
+
+#list-section #lblDoubly {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #16213e;
+    cursor: pointer;
+}
+
+#list-section #lblDoubly input {
+    width: auto;
+}
+
+#info-display {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #16213e;
+    margin-bottom: 12px;
+    min-height: 28px;
+    font-family: monospace;
 }
 
 #canvas-container {

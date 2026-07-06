@@ -28,6 +28,10 @@ class Stack {
         return this.items.length;
     }
 
+    getTop() {
+        return this.items.length - 1;
+    }
+
     getAll() {
         return [...this.items];
     }
