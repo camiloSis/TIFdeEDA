@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tree = new BinarySearchTree();
 
     const renderer = new Renderer('canvas');
+    renderer.onResize = () => updateView();
     let currentStructure = 'stack';
     let animTimer = null;
     let animSteps = [];

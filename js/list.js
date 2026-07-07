@@ -16,6 +16,19 @@ class LinkedList {
 
     setDoubly(val) {
         this.doubly = val;
+        this._rebuildLinks();
+    }
+
+    _rebuildLinks() {
+        // Recalcula prev (solo si doubly) y tail (siempre) recorriendo la lista completa
+        let current = this.head;
+        let prev = null;
+        while (current) {
+            current.prev = this.doubly ? prev : null;
+            prev = current;
+            current = current.next;
+        }
+        this.tail = prev;
     }
 
     getDoubly() {
@@ -124,12 +137,12 @@ class LinkedList {
             values: currentVals, highlight: idx, highlightColor: '#ffd700', doubly: this.doubly
         });
 
-        const newNode = new ListNode(value);
+    const newNode = new ListNode(value);
         current.next = newNode;
         if (this.doubly) {
             newNode.prev = current;
-            this.tail = newNode;
-        }
+            }
+        this.tail = newNode;
         this.size++;
 
         const finalVals = this.getAll();
@@ -242,7 +255,7 @@ class LinkedList {
             if (this.doubly && current.next) {
                 current.next.prev = before;
             }
-            if (this.doubly && !current.next) {
+            if (!current.next) {
                 this.tail = before;
             }
         }

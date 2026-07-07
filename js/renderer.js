@@ -1,10 +1,14 @@
 class Renderer {
     constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        this.ctx = this.canvas.getContext('2d');
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext('2d');
+    this.onResize = null;
+    this.resize();
+    window.addEventListener('resize', () => {
         this.resize();
-        window.addEventListener('resize', () => this.resize());
-    }
+        if (this.onResize) this.onResize();
+    });
+}
 
     resize() {
         const rect = this.canvas.parentElement.getBoundingClientRect();
