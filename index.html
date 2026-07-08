@@ -4,52 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Estructuras de Datos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="app">
-        <h1>Simulador de Estructuras de Datos</h1>
-        <nav id="menu">
-            <button data-structure="stack">Pila</button>
-            <button data-structure="queue">Cola</button>
-            <button data-structure="list">Lista</button>
-            <button data-structure="tree">Árbol Binario</button>
-        </nav>
-        <div id="controls">
-            <div id="insert-section" class="control-section">
-                <input type="number" id="inputValue" placeholder="Valor">
-                <button id="btnInsert">Insertar</button>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-mark">ED</span>
+                <div>
+                    <p class="brand-title">EDA Simulator</p>
+                    <p class="brand-sub">UNSA · Sistemas</p>
+                </div>
             </div>
-            <div id="delete-section" class="control-section">
-                <input type="number" id="inputDeleteValue" placeholder="Valor a eliminar">
-                <button id="btnDelete">Eliminar</button>
+
+            <nav id="menu" class="nav-menu">
+                <button data-structure="stack">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="4" rx="1.4"/><rect x="4" y="10" width="16" height="4" rx="1.4"/><rect x="4" y="16" width="16" height="4" rx="1.4"/></svg>
+                    <span class="label">Pila</span>
+                </button>
+                <button data-structure="queue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="4" height="10" rx="1.2"/><rect x="10" y="7" width="4" height="10" rx="1.2"/><rect x="17" y="7" width="4" height="10" rx="1.2"/></svg>
+                    <span class="label">Cola</span>
+                </button>
+                <button data-structure="list">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.4"/><circle cx="12" cy="12" r="2.4"/><circle cx="19" cy="12" r="2.4"/><line x1="7.4" y1="12" x2="9.6" y2="12"/><line x1="14.4" y1="12" x2="16.6" y2="12"/></svg>
+                    <span class="label">Lista</span>
+                </button>
+                <button data-structure="tree">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><circle cx="6" cy="15" r="2.2"/><circle cx="18" cy="15" r="2.2"/><line x1="10.6" y1="6.8" x2="7.2" y2="12.9"/><line x1="13.4" y1="6.8" x2="16.8" y2="12.9"/></svg>
+                    <span class="label">Árbol Binario</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                Trabajo Final · Estructuras de Datos y Algoritmos
             </div>
-            <div id="queue-section" class="control-section">
-                <input type="number" id="inputPosition" placeholder="Posición">
-                <input type="number" id="inputQueueValue" placeholder="Valor">
-                <button id="btnInsertAt">Insertar en posición</button>
-                <button id="btnRemoveAt">Eliminar en posición</button>
-            </div>
-            <div id="list-section" class="control-section">
-                <button id="btnInsertFirst">Insertar al inicio</button>
-                <button id="btnInsertLast">Insertar al final</button>
-                <input type="number" id="inputListPos" placeholder="Posición">
-                <input type="number" id="inputListVal" placeholder="Valor">
-                <button id="btnInsertListAt">Insertar en posición</button>
-                <button id="btnDeleteListAt">Eliminar en posición</button>
-                <button id="btnTraverseFwd">→ Recorrer adelante</button>
-                <button id="btnTraverseBwd">← Recorrer atrás</button>
-                <label id="lblDoubly">
-                    <input type="checkbox" id="chkDoubly"> Lista doble
-                </label>
-            </div>
-        </div>
-        <div id="info-display"></div>
-        <div id="canvas-container">
-            <canvas id="canvas"></canvas>
-        </div>
-        <div id="explanation"></div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Simulador interactivo</p>
+                    <h1>Estructuras de Datos</h1>
+                </div>
+                <span id="info-display" class="info-pill"></span>
+            </header>
+
+            <section class="workspace">
+                <div class="panel canvas-panel">
+                    <h2>Visualización</h2>
+                    <div id="canvas-container" class="canvas-container">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="panel controls-panel">
+                    <h2>Operaciones</h2>
+                    <div id="controls">
+                        <div id="insert-section" class="control-section">
+                            <input type="number" id="inputValue" placeholder="Valor">
+                            <button id="btnInsert" class="btn btn-primary">Insertar</button>
+                        </div>
+                        <div id="delete-section" class="control-section">
+                            <input type="number" id="inputDeleteValue" placeholder="Valor a eliminar">
+                            <button id="btnDelete" class="btn btn-danger">Eliminar</button>
+                        </div>
+                        <div id="queue-section" class="control-section">
+                            <input type="number" id="inputPosition" placeholder="Posición">
+                            <input type="number" id="inputQueueValue" placeholder="Valor">
+                            <button id="btnInsertAt" class="btn btn-primary">Insertar en posición</button>
+                            <button id="btnRemoveAt" class="btn btn-danger">Eliminar en posición</button>
+                        </div>
+                        <div id="list-section" class="control-section">
+                            <button id="btnInsertFirst" class="btn btn-primary">Insertar al inicio</button>
+                            <button id="btnInsertLast" class="btn btn-primary">Insertar al final</button>
+                            <input type="number" id="inputListPos" placeholder="Posición">
+                            <input type="number" id="inputListVal" placeholder="Valor">
+                            <button id="btnInsertListAt" class="btn btn-primary">Insertar en posición</button>
+                            <button id="btnDeleteListAt" class="btn btn-danger">Eliminar en posición</button>
+                            <button id="btnTraverseFwd" class="btn btn-info">→ Recorrer adelante</button>
+                            <button id="btnTraverseBwd" class="btn btn-plum">← Recorrer atrás</button>
+                            <label id="lblDoubly">
+                                <input type="checkbox" id="chkDoubly"> Lista doble
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="explanation" class="explanation-card"></section>
+        </main>
     </div>
+
     <script src="js/stack.js"></script>
     <script src="js/queue.js"></script>
     <script src="js/list.js"></script>
