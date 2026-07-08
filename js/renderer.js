@@ -25,14 +25,33 @@ class Renderer {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
+        this.onResize = null;
         this.resize();
-        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('resize', () => {
+            this.resize();
+            if (this.onResize) this.onResize();
+        });
     }
 
     resize() {
         const rect = this.canvas.parentElement.getBoundingClientRect();
-        this.canvas.width = rect.width || 800;
-        this.canvas.height = rect.height || 350;
+        // Tamaño mínimo = tamaño del contenedor. El canvas nunca es más
+        // chico que esto, pero sí puede crecer más allá si el contenido
+        // (más elementos en la estructura) lo requiere.
+        this.baseWidth = rect.width || 800;
+        this.baseHeight = rect.height || 350;
+        this.canvas.width = this.baseWidth;
+        this.canvas.height = this.baseHeight;
+    }
+
+    // Agranda el canvas si el contenido lo necesita, sin achicarlo nunca
+    // por debajo del tamaño del contenedor. Al cambiar width/height el
+    // navegador limpia el canvas, así que solo se toca cuando cambia.
+    _setCanvasSize(neededW, neededH) {
+        const w = Math.max(this.baseWidth, Math.ceil(neededW));
+        const h = Math.max(this.baseHeight, Math.ceil(neededH));
+        if (this.canvas.width !== w) this.canvas.width = w;
+        if (this.canvas.height !== h) this.canvas.height = h;
     }
 
     clear() {
@@ -68,14 +87,20 @@ class Renderer {
     }
 
     drawStack(items) {
-        this.clear();
         const ctx = this.ctx;
-        const w = this.canvas.width;
-        const h = this.canvas.height;
         const boxW = 80;
         const boxH = 40;
-        const startY = h - 60;
         const gap = 5;
+
+        // Más elementos -> canvas más alto. El ancho no necesita crecer,
+        // la pila siempre es una sola columna centrada.
+        const neededH = items.length * (boxH + gap) + 100;
+        this._setCanvasSize(this.baseWidth, neededH);
+        this.clear();
+
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        const startY = h - 60;
         const topIdx = items.length - 1;
 
         items.forEach((val, i) => {
@@ -109,14 +134,19 @@ class Renderer {
     }
 
     drawQueue(items) {
-        this.clear();
         const ctx = this.ctx;
-        const w = this.canvas.width;
-        const h = this.canvas.height;
         const boxW = 60;
         const boxH = 50;
         const gap = 10;
         const totalW = items.length * (boxW + gap) - gap;
+
+        // Más elementos -> canvas más ancho. La altura no cambia, la cola
+        // siempre es una sola fila centrada verticalmente.
+        this._setCanvasSize(totalW + 200, this.baseHeight);
+        this.clear();
+
+        const w = this.canvas.width;
+        const h = this.canvas.height;
         const startX = Math.max(40, w / 2 - totalW / 2);
         const y = h / 2 - boxH / 2;
 
@@ -169,10 +199,7 @@ class Renderer {
     }
 
     drawList(stepInfo) {
-        this.clear();
         const ctx = this.ctx;
-        const w = this.canvas.width;
-        const h = this.canvas.height;
 
         const { values, highlight, highlightColor, doubly, floatingValue, floatingLabel, markDeleted, fadeIdx, extraLabel } = stepInfo;
         const hColor = highlightColor || COLORS.highlight;
@@ -183,6 +210,14 @@ class Renderer {
         const nodeH = 50;
         const gap = 70;
         const totalW = values.length * (nodeW + gap) - gap;
+
+        // Más nodos -> canvas más ancho. Se deja margen extra para las
+        // etiquetas NULL/head/tail que sobresalen del primer y último nodo.
+        this._setCanvasSize(totalW + 220, this.baseHeight);
+        this.clear();
+
+        const w = this.canvas.width;
+        const h = this.canvas.height;
         const startX = Math.max(60, w / 2 - totalW / 2);
         const y = h / 2 - nodeH / 2 - 15;
 
@@ -427,27 +462,43 @@ class Renderer {
     }
 
     drawTree(root) {
-        this.clear();
-        if (!root) return;
         const ctx = this.ctx;
-        const w = this.canvas.width;
+
+        if (!root) {
+            this._setCanvasSize(this.baseWidth, this.baseHeight);
+            this.clear();
+            return;
+        }
 
         const levelHeight = 70;
         const nodeRadius = 24;
+        const hSpacing = 56;
         const positions = [];
 
-        const dfs = (node, depth, left, right) => {
-            if (!node) return null;
-            const mid = (left + right) / 2;
-            const x = mid;
+        // Se posiciona cada nodo según su lugar en el recorrido in-order
+        // (izquierda -> nodo -> derecha). Como el in-order de un BST
+        // siempre sale ordenado, esto reparte los nodos en el eje X sin
+        // que se superpongan nunca, sea el árbol balanceado o esté
+        // completamente degenerado (por ejemplo, insertando valores ya
+        // ordenados). El ancho necesario crece de forma lineal con la
+        // cantidad de nodos en vez de exponencial con la profundidad.
+        let order = 0;
+        const dfs = (node, depth) => {
+            if (!node) return;
+            dfs(node.left, depth + 1);
+            const x = 50 + order * hSpacing;
             const y = 60 + depth * levelHeight;
             positions.push({ node, x, y, depth });
-            dfs(node.left, depth + 1, left, mid - 20);
-            dfs(node.right, depth + 1, mid + 20, right);
-            return true;
+            order++;
+            dfs(node.right, depth + 1);
         };
+        dfs(root, 0);
 
-        dfs(root, 0, 0, w);
+        const maxDepth = this._maxDepth(root) - 1;
+        const neededW = order * hSpacing + 100;
+        const neededH = 60 + maxDepth * levelHeight + 90;
+        this._setCanvasSize(neededW, neededH);
+        this.clear();
 
         ctx.strokeStyle = COLORS.stroke;
         ctx.lineWidth = 2;
@@ -487,6 +538,15 @@ class Renderer {
             ctx.textBaseline = 'middle';
             ctx.fillText(node.value, x, y);
         });
+
+        // Como el recorrido in-order puede dejar la raíz en cualquier punto
+        // del eje X (no necesariamente al centro del contenido), se centra
+        // el scroll horizontal sobre la raíz para que sea visible de entrada.
+        const rootPos = positions.find(p => p.node === root);
+        const container = this.canvas.parentElement;
+        if (rootPos && container.scrollWidth > container.clientWidth) {
+            container.scrollLeft = Math.max(0, rootPos.x - container.clientWidth / 2);
+        }
     }
 
     _maxDepth(node) {
