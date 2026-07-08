@@ -1,8 +1,8 @@
 # Simulador de Estructuras de Datos - v6
 
-## Documentación completa: scroll dinámico del canvas
+## Scroll dinámico del canvas
 
-Este documento reúne todo el trabajo realizado a partir del pedido de agregar barras de scroll a pila, cola, lista y árbol: la implementación original, las dos observaciones que surgieron al probarla, el diagnóstico de cada una y la solución aplicada. Reemplaza y amplía lo descrito en `version5.md`, ya que durante las pruebas aparecieron dos problemas adicionales que no se habían detectado al escribir ese documento.
+Este documento reúne todo el trabajo realizado a partir del pedido de agregar barras de scroll a pila, cola, lista y árbol: la implementación original, las dos observaciones que surgieron al probarla, el diagnóstico de cada una y la solución aplicada. Reemplaza y amplía lo descrito en anteriores versiones, ya que durante las pruebas aparecieron dos problemas adicionales que no se habían detectado al escribir dichos documentos.
 
 ---
 

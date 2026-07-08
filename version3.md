@@ -1,8 +1,8 @@
-# Simulador de Estructuras de Datos - v4
+# Simulador de Estructuras de Datos - v3
 
 ## Rediseño visual del simulador
 
-Este documento explica los cambios aplicados al diseño visual de la interfaz (no se modificó ninguna lógica de las estructuras de datos), el porqué de cada decisión, y qué partes exactas del código cambiaron en cada archivo.
+Cambios aplicados al diseño visual de la interfaz (no se modificó ninguna lógica de las estructuras de datos), el porqué de cada decisión, y qué partes exactas del código cambiaron en cada archivo.
 
 ---
 
